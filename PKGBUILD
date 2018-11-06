@@ -65,6 +65,7 @@ source=("https://ftp.gnu.org/gnu/${pkgname%-*}/${pkgname%-*}-${pkgver}.tar.xz"
         '07-maybe_quiet.patch'
         '08-quick_boot.patch'
         '09-Fix-packed-not-aligned-error-on-GCC-8.patch'
+	'0010-relocation.patch'
         'grub.silent')
 
 sha256sums=('810b3798d316394f94096ec2797909dbf23c858e48f7b3830826b8daa06b7b0f'
@@ -79,6 +80,7 @@ sha256sums=('810b3798d316394f94096ec2797909dbf23c858e48f7b3830826b8daa06b7b0f'
             'b7489c7facc4fb3dad4426c9c00079b64908640a2bec2409e22194daa3f72af4'
             '057f076ddca241d92a094bc05828e3eb18d3439bf4d2f3d8ca8fa1c51b5b1b2b'
             'e84b8de569c7e6b73263758c35cf95c6516fde85d4ed451991427864f6a4e5a8'
+            '39ace267e2a47b2efe308ea09093d465ee7bd009ddb6b2f1e07b82815ec0ea8a'
             '764844ca8ee0869761cc1a7ed76b5c729ea560664ba26afc339ba4c5d5c7b2e3')
 
 prepare() {
@@ -100,6 +102,11 @@ prepare() {
 	msg "Patch to allow GRUB to mount ext2/3/4 filesystems that have the encryption feature"
 	patch -Np1 -i "${srcdir}/04-ext4_feature_encrypt.patch"
 	echo
+	
+	msg "Fix Realocation 0x4"
+	patch -Np1 -i "${srcdir}/0010-relocation.patch"
+	echo
+
 
 	msg "Fix DejaVuSans.ttf location so that grub-mkfont can create *.pf2 files for starfield theme"
 	sed 's|/usr/share/fonts/dejavu|/usr/share/fonts/dejavu /usr/share/fonts/TTF|g' -i "configure.ac"
